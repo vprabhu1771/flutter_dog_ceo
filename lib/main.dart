@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dog_ceo/screens/DogScreen.dart';
+import 'package:flutter_dog_ceo/screens/HomeScreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: DogScreen(title: 'Dog Images'),
+      home: HomeScreen(title: 'Dog Images'),
     );
   }
 }
