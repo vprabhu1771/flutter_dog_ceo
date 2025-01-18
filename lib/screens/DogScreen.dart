@@ -20,23 +20,33 @@ class DogScreen extends StatefulWidget {
 class _DogScreenState extends State<DogScreen> {
 
   Dog? dog;
+  bool isLoading = false;
 
   Future<void> fetchDogImage() async {
+    setState(() {
+      isLoading = true;
+    });
 
-    final response = await http.get(Uri.parse(Constants.BASE_URL + Constants.RANDOM_DOG_IMAGE));
+    try {
+      final response = await http.get(Uri.parse(Constants.BASE_URL + Constants.RANDOM_DOG_IMAGE));
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body);
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
 
+        setState(() {
+          dog = Dog.fromJson(data);
+        });
+      } else {
+        throw Exception("Failed to load image");
+      }
+    } catch (e) {
+      // Optionally handle error here
+      print(e);
+    } finally {
       setState(() {
-        dog = Dog.fromJson(data);
+        isLoading = false;
       });
     }
-    else
-    {
-      throw Exception("Failed to load image");
-    }
-
   }
 
   @override
@@ -45,21 +55,35 @@ class _DogScreenState extends State<DogScreen> {
     fetchDogImage();
   }
 
+  Future<void> _handleRefresh() async {
+    await fetchDogImage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title)
+        title: Text(widget.title),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: (){
+              _handleRefresh();
+            },
+          ),
+        ],
       ),
       body: Center(
-        child: dog != null
+        child: isLoading
+            ? CircularProgressIndicator()
+            : dog != null
             ? Image.network(
           dog!.message,
           width: 300,
           height: 300,
           fit: BoxFit.cover,
         )
-            : CircularProgressIndicator(),
+            : Text('Failed to load image'),
       ),
     );
   }
