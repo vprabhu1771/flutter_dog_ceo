@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
 
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => HomeScreen(title: 'Home')),
+                    MaterialPageRoute(builder: (context) => HomeScreen(title: 'Home Screen')),
                   );
 
                 },
@@ -96,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () {
 
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => DogScreen(title: 'Dog')),
+                    MaterialPageRoute(builder: (context) => DogScreen(title: 'Dog Screen')),
                   );
 
                 },
